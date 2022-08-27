@@ -2,10 +2,17 @@ from flet import Checkbox, TextField, icons, Column, Row, UserControl, IconButto
 
 
 class TaskControl(UserControl):
-    def __init__(self, task_name):
+    def __init__(self, task_name, task_status_change, task_delete):
         super().__init__()
         self.task_name = task_name
-        self.display_task = Checkbox(value=False, label=self.task_name)
+        self.task_status_change = task_status_change
+        self.task_delete = task_delete
+        self.completed = False
+        self.display_task = Checkbox(
+            value=False,
+            label=self.task_name,
+            on_change=self.status_changed
+        )
         self.edit_name = TextField(expand=1)
         self.edit_button = IconButton(
             icon=icons.CREATE_OUTLINED,
@@ -59,6 +66,13 @@ class TaskControl(UserControl):
         self.display_view.visible = True
         self.edit_view.visible = False
         self.update()
+
+    def delete_clicked(self, e):
+        self.task_delete(self)
+
+    def status_changed(self, e):
+        self.completed = self.display_task.value
+        self.task_status_change(self)
 
     def build(self):
         view = Column(
