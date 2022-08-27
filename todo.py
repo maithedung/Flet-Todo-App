@@ -88,12 +88,16 @@ class TodoAppControl(UserControl):
 
     def update(self):
         status = self.filter.tabs[self.filter.selected_index].text
+        count = 0
         for task in self.tasks.controls:
             task.visible = (
                 status == 'all'
                 or (status == 'active' and task.completed is False)
                 or (status == 'completed' and task.completed)
             )
+            if not task.completed:
+                count += 1
+        self.items_left.value = f'{count} active item(s) left'
         super().update()
 
     def build(self):
