@@ -1,4 +1,4 @@
-app = "<flet-todo-app>"
+app = "flet-todo-app"
 
 kill_signal = "SIGINT"
 kill_timeout = 5
