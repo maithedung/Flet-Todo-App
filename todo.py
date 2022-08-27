@@ -31,7 +31,7 @@ class TodoAppControl(UserControl):
             ]
         )
         self.title = Text(
-            value='Todos',
+            value='Todos maithedung',
             style='headlineMedium'
         )
 
