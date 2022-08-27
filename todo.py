@@ -1,34 +1,30 @@
-import flet
-from flet import Checkbox, FloatingActionButton, Page, TextField, icons, Column, Row
+from flet import Checkbox, FloatingActionButton, TextField, icons, Column, Row, UserControl
 
 
-def main(page: Page):
-    def add_click(e):
-        cb = Checkbox(label=new_task.value)
-        tasks_view.controls.append(cb)
-        new_task.value = ''
-        page.update()
+class TodoAppControl(UserControl):
+    def __init__(self):
+        super().__init__()
+        self.new_task = TextField(hint_text='Whats needs to be done?', expand=True)
+        self.head_view = Row(
+            controls=[
+                self.new_task,
+                FloatingActionButton(icon=icons.ADD, on_click=self.add_click)
+            ]
+        )
+        self.tasks_view = Column()
 
-    page.horizontal_alignment = 'center'
-    new_task = TextField(hint_text='Whats needs to be done?', expand=True)
-    tasks_view = Column()
-    head_view = Row(
-        controls=[
-            new_task,
-            FloatingActionButton(icon=icons.ADD, on_click=add_click)
-        ]
-    )
+    def add_click(self, e):
+        cb = Checkbox(label=self.new_task.value)
+        self.tasks_view.controls.append(cb)
+        self.new_task.value = ''
+        self.update()
 
-    view = Column(
-        width=600,
-        controls=[
-            head_view,
-            tasks_view
-        ]
-    )
-
-
-    page.add(view)
-
-
-flet.app(target=main)
+    def build(self):
+        view = Column(
+            width=600,
+            controls=[
+                self.head_view,
+                self.tasks_view
+            ]
+        )
+        return view
